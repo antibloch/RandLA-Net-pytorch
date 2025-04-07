@@ -46,8 +46,21 @@ bash compile_op.sh
 
 Download the [Semantic KITTI dataset](http://semantic-kitti.org/dataset.html#download), and preprocess the data:
 
+```code
+# Create the target directory
+mkdir -p kitti_ds
+
+# Download the datasets (with proper names)
+wget -O data_odometry_velodyne.zip http://www.cvlibs.net/download.php?file=data_odometry_velodyne.zip
+wget -O data_odometry_labels.zip https://semantic-kitti.org/assets/data_odometry_labels.zip
+
+# Extract both zip files into the kitti_ds directory
+unzip data_odometry_velodyne.zip -d kitti_ds/
+unzip data_odometry_labels.zip -d kitti_ds/
 ```
-python data_prepare_semantickitti.py
+
+```
+python data_prepare_semantickitti.py --src_path kitti_ds/sequences --dst_path refined_kitti_ds
 ```
 Note: 
 - Please change the dataset path in the `data_prepare_semantickitti.py` with your own path.
