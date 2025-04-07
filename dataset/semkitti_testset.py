@@ -12,7 +12,7 @@ from tqdm import tqdm
 class SemanticKITTI(torch_data.IterableDataset):
     def __init__(self, mode, test_id=None, batch_size=20, data_list=None):
         self.name = 'SemanticKITTI'
-        self.dataset_path = '/tmp2/tsunghan/PCL_Seg_data/sequences_0.06'
+        self.dataset_path = './refined_kitti_ds'
         self.batch_size = batch_size
         self.num_classes = cfg.num_classes
         self.ignored_labels = np.sort([0])
