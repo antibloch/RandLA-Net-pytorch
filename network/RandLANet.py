@@ -38,7 +38,7 @@ class Network(nn.Module):
         self.fc3 = pt_utils.Conv2d(32, self.config.num_classes, kernel_size=(1, 1), bn=False, activation=None)
 
     def forward(self, end_points):
-        features = end_points['features']  # Batch*channel*npoints
+        features = end_points['features'].contiguous()  # Batch*channel*npoints
         features = self.fc0(features)
 
         features = features.unsqueeze(dim=3)  # Batch*channel*npoints*1
