@@ -10,7 +10,7 @@ import torch
 class SemanticKITTI(torch_data.Dataset):
     def __init__(self, mode, data_list=None):
         self.name = 'SemanticKITTI'
-        self.dataset_path = '/tmp2/tsunghan/PCL_Seg_data/sequences_0.06'
+        self.dataset_path = './refined_kitti_ds'
 
         self.num_classes = cfg.num_classes
         self.ignored_labels = np.sort([0])
