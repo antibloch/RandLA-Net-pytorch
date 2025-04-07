@@ -123,7 +123,7 @@ class SemanticKITTI(torch_data.Dataset):
         inputs['interp_idx'] = []
         for tmp in flat_inputs[3 * num_layers:4 * num_layers]:
             inputs['interp_idx'].append(torch.from_numpy(tmp).long())
-        inputs['features'] = torch.from_numpy(flat_inputs[4 * num_layers]).transpose(1, 2).float()
+        inputs['features'] = torch.from_numpy(flat_inputs[4 * num_layers]).transpose(1, 2).float().contiguous()
         inputs['labels'] = torch.from_numpy(flat_inputs[4 * num_layers + 1]).long()
 
         return inputs
