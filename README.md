@@ -24,11 +24,15 @@ This repository contains the implementation of [RandLA-Net (CVPR 2020 Oral)](htt
 
 ## A. Environment Setup
 
-0. Click [this webpage](https://pytorch.org/get-started/locally/) and use conda to install pytorch>=1.4 (Be aware of the cuda version when installation)
-
 1. Install python packages
 
 ```
+conda create -n randlanet python=3.6 -y
+
+pip install torch==1.8.1+cu111 torchvision==0.9.1+cu111 torchaudio==0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
+
+conda install cython
+
 pip install -r requirements.txt
 ```
 
