@@ -19,6 +19,10 @@ from network.RandLANet import Network
 from network.loss_func import compute_loss
 
 torch.backends.cudnn.enabled = False
+# torch.backends.cudnn.benchmark = True
+# torch.backends.cudnn.deterministic = True
+# But disable for batch norm operations
+os.environ['CUDNN_ENABLED'] = '0'
 
 warnings.filterwarnings("ignore")
 parser = argparse.ArgumentParser()
@@ -71,7 +75,9 @@ class Trainer:
             pin_memory=True
         )
         # Network & Optimizer
-        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        os.environ["CUDA_VISIBLE_DEVICES"] = "0"  # Use only first GPU
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.net = Network(cfg)
         self.net.to(device)
 
