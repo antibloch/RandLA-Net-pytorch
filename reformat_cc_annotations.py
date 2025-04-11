@@ -133,6 +133,8 @@ new_dir = 'refined_dataset'
 
 if not os.path.exists(new_dir):
     os.makedirs(new_dir)
+    os.makedirs(os.path.join(new_dir, 'velodyne'))
+    os.makedirs(os.path.join(new_dir, 'labels'))
 else:
     os.rmdir(new_dir)
     os.makedirs(new_dir)
@@ -195,13 +197,9 @@ for fold_name in fold_names:
     #     pickle.dump(cum_labels, f)
 
 
-    points_file = os.path.join(new_dir, 'velodyne', f'{fold_name}.npy')
-    labels_file = os.path.join(new_dir, 'labels', f'{fold_name}.npy')
+    np.save(os.path.join(new_dir, 'velodyne', f'{fold_name}.npy'), cum_points)
+    np.save(os.path.join(new_dir, 'labels', f'{fold_name}.npy'), cum_labels)
 
-    with open(points_file, 'wb') as f:
-        np.save(f, cum_points)
-    with open(labels_file, 'wb') as f:  
-        np.save(f, cum_labels)
 
     print("\n")
 
