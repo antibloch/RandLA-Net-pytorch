@@ -129,7 +129,7 @@ color_coding = {
 
 
 main_dir = 'dataset'
-new_dir = 'refined_dataset'
+new_dir = '22'
 
 if not os.path.exists(new_dir):
     os.makedirs(new_dir)
