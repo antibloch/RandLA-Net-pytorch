@@ -73,7 +73,7 @@ for seq_id in seq_list:
                 points  = np.load(join(pc_path, scan_id))
                 points = points[:, :3]
                 points = points.astype(np.float32)
-                labels = np.load(join(label_path, str(scan_id) + '.npy'))
+                labels = np.load(join(label_path, scan_id))
                 labels = labels.astype(np.int32)
             else:
                 points = DP.load_pc_kitti(join(pc_path, scan_id))
