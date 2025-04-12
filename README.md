@@ -71,7 +71,7 @@ Note:
 1. Training
 
 ```bash
-python3 train_SemanticKITTI.py --log_dir log --max_epoch 50 --batch_size 8 --val_batch_size 8
+python3 train_SemanticKITTI.py --log_dir log --max_epoch 50 --batch_size 4 --val_batch_size 4
 ```
 
 2. Testing
