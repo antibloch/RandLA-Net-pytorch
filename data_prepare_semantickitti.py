@@ -80,6 +80,8 @@ for seq_id in seq_list:
                 elif points.shape[1] > 3:
                     # If it has more than 3 columns, take only the first 3 (xyz)
                     points = points[:, :3]
+                # Explicitly convert to float32
+                points = points.astype(np.float32)
                 
                 # Load labels - adjust the path based on your actual naming convention
                 label_file = join(label_path, scan_id)
@@ -131,6 +133,8 @@ for seq_id in seq_list:
                 elif points.shape[1] > 3:
                     # If it has more than 3 columns, take only the first 3 (xyz)
                     points = points[:, :3]
+                # Explicitly convert to float32
+                points = points.astype(np.float32)
             else:
                 # Regular KITTI format files
                 points = DP.load_pc_kitti(join(pc_path, scan_id))
