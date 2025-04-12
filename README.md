@@ -107,6 +107,12 @@ python3 evaluate_SemanticKITTI.py --dataset /home/ti3080/codework/randlanet_pyto
 python3 reformat_cc_annotations.py
 ```
 
+After this, the dataset is prepared via
+
+```bash
+python data_prepare_semantickitti.py --src_path kitti_ds/sequences --dst_path refined_kitti_ds --augment
+```
+
 ## Acknowledgement
 
 - Original Tensorflow implementation [link](https://github.com/QingyongHu/RandLA-Net)
