@@ -188,17 +188,17 @@ for fold_name in fold_names:
 
     print("===============================================================")
 
-    # save points and labels as .pkl files 
-    points_file = os.path.join(new_dir, 'velodyne', f'{fold_name}.pkl')
-    labels_file = os.path.join(new_dir, 'labels', f'{fold_name}.pkl')
-    with open(points_file, 'wb') as f:
-        pickle.dump(cum_points, f)
-    with open(labels_file, 'wb') as f:
-        pickle.dump(cum_labels, f)
+    # # save points and labels as .pkl files 
+    # points_file = os.path.join(new_dir, 'velodyne', f'{fold_name}.pkl')
+    # labels_file = os.path.join(new_dir, 'labels', f'{fold_name}.pkl')
+    # with open(points_file, 'wb') as f:
+    #     pickle.dump(cum_points, f)
+    # with open(labels_file, 'wb') as f:
+    #     pickle.dump(cum_labels, f)
 
-    # # save as .npy
-    # np.save(os.path.join(new_dir, 'velodyne', f'{fold_name}.npy'), cum_points)
-    # np.save(os.path.join(new_dir, 'labels', f'{fold_name}.npy'), cum_labels)
+    # save as .npy
+    np.save(os.path.join(new_dir, 'velodyne', f'{fold_name}.npy'), cum_points)
+    np.save(os.path.join(new_dir, 'labels', f'{fold_name}.npy'), cum_labels)
 
 
     print("\n")
