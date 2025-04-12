@@ -62,7 +62,7 @@ for seq_id in seq_list:
                 proj_save = join(proj_path, str(scan_id[:-4]) + '_proj.pkl')
                 with open(proj_save, 'wb') as f:
                     pickle.dump([proj_inds], f)
-    elif FLAGS.augment and (int(seq_id) < 11 or int(seq_id) >21):
+    elif FLAGS.augment and (int(seq_id) < 11 or int(seq_id) > 21):
         label_path = join(seq_path, 'labels')
         label_path_out = join(seq_path_out, 'labels')
         os.makedirs(label_path_out) if not exists(label_path_out) else None
@@ -70,12 +70,34 @@ for seq_id in seq_list:
         for scan_id in scan_list:
             print(scan_id)
             if '.npy' in scan_id:
-                points  = np.load(join(pc_path, scan_id))
-                points = points[:, :3]
-                labels = np.load(join(label_path, str(scan_id) + '.npy'))
+                # Directly load .npy file
+                points = np.load(join(pc_path, scan_id))
+                # Ensure points has the correct shape (num_points, 3)
+                if len(points.shape) == 1:
+                    # If it's a flat array, reshape it assuming 3 coordinates per point
+                    num_points = points.shape[0] // 3
+                    points = points.reshape((num_points, 3))
+                elif points.shape[1] > 3:
+                    # If it has more than 3 columns, take only the first 3 (xyz)
+                    points = points[:, :3]
+                
+                # Load labels - adjust the path based on your actual naming convention
+                label_file = join(label_path, scan_id)
+                if exists(label_file):
+                    labels = np.load(label_file)
+                else:
+                    # Try alternative naming pattern
+                    label_file = join(label_path, scan_id.replace('.npy', '.label.npy'))
+                    if exists(label_file):
+                        labels = np.load(label_file)
+                    else:
+                        # If no label file exists, create dummy labels
+                        labels = np.zeros(points.shape[0], dtype=np.int32)
             else:
+                # Regular KITTI format files
                 points = DP.load_pc_kitti(join(pc_path, scan_id))
                 labels = DP.load_label_kitti(join(label_path, str(scan_id[:-4]) + '.label'), remap_lut)
+            
             sub_points, sub_labels = DP.grid_sub_sampling(points, labels=labels, grid_size=grid_size)
             search_tree = KDTree(sub_points)
             KDTree_save = join(KDTree_path_out, str(scan_id[:-4]) + '.pkl')
@@ -91,15 +113,28 @@ for seq_id in seq_list:
                 proj_save = join(proj_path, str(scan_id[:-4]) + '_proj.pkl')
                 with open(proj_save, 'wb') as f:
                     pickle.dump([proj_inds], f)
-
-
     else:
         proj_path = join(seq_path_out, 'proj')
         os.makedirs(proj_path) if not exists(proj_path) else None
         scan_list = np.sort(os.listdir(pc_path))
         for scan_id in scan_list:
             print(scan_id)
-            points = DP.load_pc_kitti(join(pc_path, scan_id))
+            # Check if the file is .npy
+            if '.npy' in scan_id:
+                # Directly load .npy file
+                points = np.load(join(pc_path, scan_id))
+                # Ensure points has the correct shape (num_points, 3)
+                if len(points.shape) == 1:
+                    # If it's a flat array, reshape it assuming 3 coordinates per point
+                    num_points = points.shape[0] // 3
+                    points = points.reshape((num_points, 3))
+                elif points.shape[1] > 3:
+                    # If it has more than 3 columns, take only the first 3 (xyz)
+                    points = points[:, :3]
+            else:
+                # Regular KITTI format files
+                points = DP.load_pc_kitti(join(pc_path, scan_id))
+            
             sub_points = DP.grid_sub_sampling(points, grid_size=0.06)
             search_tree = KDTree(sub_points)
             proj_inds = np.squeeze(search_tree.query(points, return_distance=False))
