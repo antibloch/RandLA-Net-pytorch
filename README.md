@@ -71,13 +71,13 @@ Note:
 1. Training
 
 ```bash
-python3 train_SemanticKITTI.py <args>
+python3 train_SemanticKITTI.py --log_dir log --max_epoch 50 --batcch_size 8 --val_batch_size 8
 ```
 
 2. Testing
 
 ```bash
-python3 test_SemanticKITTI.py <args>
+python3 test_SemanticKITTI.py --infer_type sub --checkpoint_path log/checkpoint.tar
 ```
 **Note: if the flag `--index_to_label` is set, output predictions will be ".label" files (label figure) which can be visualized; Otherwise, they will be ".npy" (0-19 index) files which is used to evaluated afterward.**
 
@@ -100,9 +100,17 @@ python3 evaluate_SemanticKITTI.py --dataset /home/ti3080/codework/randlanet_pyto
 ```
 
 
-## E. Augmenting Dataset
+## E. Testing on new dataset
+For testing the pretrain model from log/checkpoint.tar on new point cloud named "combined.ply".
+
+```bash
+python3 testnew_star.py
+```
+
+## F. Augmenting Dataset
 
    If one annotates new point clouds with Cloud Compare in format pc{index}_{class name}{num of time, the segmentation of this class for same index point cloud}.ply, within subdirectories of name pc{index}, withiin parent 'dataset' directory, then can be standardized by reformat_cc_annotations.py to create folder "22", and add this folder in kitti_ds/sequences.
+   
 ```bash
 python3 reformat_cc_annotations.py
 ```
