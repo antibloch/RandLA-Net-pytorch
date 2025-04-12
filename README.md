@@ -94,10 +94,16 @@ python3 visualize_SemanticKITTI.py <args>
 - Example Evaluation code
 
 ```bash
-# python3 evaluate_SemanticKITTI.py --dataset /tmp2/tsunghan/PCL_Seg_data/sequences_0.06/ \
-    --predictions runs/supervised/predictions/ --sequences 8
+# python3 evaluate_SemanticKITTI.py --dataset /tmp2/tsunghan/PCL_Seg_data/sequences_0.06/ --predictions runs/supervised/predictions/ --sequences 8
 
 python3 evaluate_SemanticKITTI.py --dataset /home/ti3080/codework/randlanet_pytorch/refined_kitti_ds    --predictions /home/ti3080/codework/randlanet_pytorch/validation_result --sequences 08 --eval_type sub
+```
+
+
+3. Augmenting Code
+   If one annotates new point clouds with Cloud Compare in format pc{index}_{class name}{time segmentation of this class for same index point cloud}.ply, and store them in 'dataset' directory, then can be standardized by reformat_cc_annotations.py, and added in kitti_ds/sequences.
+```bash
+python3 reformat_cc_annotations.py
 ```
 
 ## Acknowledgement
