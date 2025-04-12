@@ -102,7 +102,7 @@ python3 evaluate_SemanticKITTI.py --dataset /home/ti3080/codework/randlanet_pyto
 
 ## E. Augmenting Dataset
 
-   If one annotates new point clouds with Cloud Compare in format pc{index}_{class name}{time segmentation of this class for same index point cloud}.ply, and store them in 'dataset' directory, then can be standardized by reformat_cc_annotations.py to create folder "22", and add this folder in kitti_ds/sequences.
+   If one annotates new point clouds with Cloud Compare in format pc{index}_{class name}{num of time, the segmentation of this class for same index point cloud}.ply, within subdirectories of name pc{index}, withiin parent 'dataset' directory, then can be standardized by reformat_cc_annotations.py to create folder "22", and add this folder in kitti_ds/sequences.
 ```bash
 python3 reformat_cc_annotations.py
 ```
