@@ -197,8 +197,9 @@ for fold_name in fold_names:
     #     pickle.dump(cum_labels, f)
 
     # save as .npy
-    np.save(os.path.join(new_dir, 'velodyne', f'{fold_name}.npy'), cum_points)
-    np.save(os.path.join(new_dir, 'labels', f'{fold_name}.npy'), cum_labels)
+    fold_idx = int(fold_name.split["pc"][-1])
+    np.save(os.path.join(new_dir, 'velodyne', f'{fold_idx}.npy'), cum_points)
+    np.save(os.path.join(new_dir, 'labels', f'{fold_idx}.npy'), cum_labels)
 
 
     print("\n")
