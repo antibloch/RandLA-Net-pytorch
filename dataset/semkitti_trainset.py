@@ -18,7 +18,7 @@ class SemanticKITTI(torch_data.Dataset):
         self.mode = mode
         if data_list is None:
             if mode == 'training':
-                seq_list = ['00', '01', '02', '03', '04', '05', '06', '07', '09', '10']
+                seq_list = ['00', '01', '02', '03', '04', '05', '06', '07', '09', '10', '22']
             elif mode == 'validation':
                 seq_list = ['08']
             self.data_list = DP.get_file_list(self.dataset_path, seq_list)
