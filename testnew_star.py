@@ -411,12 +411,86 @@ def infer_test_dataset():
 
     pred_labels += 1  # Note this line adds 1 to all values
     pred_labels = remap(pred_labels)  # Remap labels to original values
-    
+
+    yaml_label_dic = {
+        0: "unlabeled",
+        1: "outlier",
+        10: "car",
+        11: "bicycle",
+        13: "bus",
+        15: "motorcycle",
+        16: "on-rails",
+        18: "truck",
+        20: "other-vehicle",
+        30: "person",
+        31: "bicyclist",
+        32: "motorcyclist",
+        40: "road",
+        44: "parking",
+        48: "sidewalk",
+        49: "other-ground",
+        50: "building",
+        51: "fence",
+        52: "other-structure",
+        60: "lane-marking",
+        70: "vegetation",
+        71: "trunk",
+        72: "terrain",
+        80: "pole",
+        81: "traffic-sign",
+        99: "other-object",
+        252: "moving-car",
+        253: "moving-bicyclist",
+        254: "moving-person",
+        255: "moving-motorcyclist",
+        256: "moving-on-rails",
+        257: "moving-bus",
+        258: "moving-truck",
+        259: "moving-other-vehicle"
+    }
+
+    yaml_label_color = {
+        0: [0, 0, 0],
+        1: [0, 0, 255],
+        10: [245, 150, 100],
+        11: [245, 230, 100],
+        13: [250, 80, 100],
+        15: [150, 60, 30],
+        16: [255, 0, 0],
+        18: [180, 30, 80],
+        20: [255, 0, 0],
+        30: [30, 30, 255],
+        31: [200, 40, 255],
+        32: [90, 30, 150],
+        40: [255, 0, 255],
+        44: [255, 150, 255],
+        48: [75, 0, 75],
+        49: [75, 0, 175],
+        50: [0, 200, 255],
+        51: [50, 120, 255],
+        52: [0, 150, 255],
+        60: [170, 255, 150],
+        70: [0, 175, 0],
+        71: [0, 60, 135],
+        72: [80, 240, 150],
+        80: [150, 240, 255],
+        81: [0, 0, 255],
+        99: [255, 255, 50],
+        252: [245, 150, 100],
+        256: [255, 0, 0],
+        253: [200, 40, 255],
+        254: [30, 30, 255],
+        255: [90, 30, 150],
+        257: [250, 80, 100],
+        258: [180, 30, 80],
+        259: [255, 0, 0]
+    }
     # Report class distribution
     unique_classes, counts = np.unique(pred_labels, return_counts=True)
     print("\nClass distribution:")
     for cls, count in zip(unique_classes, counts):
-        class_name = LEARNING_IDX_TO_NAME.get(cls, "unknown")
+        # class_name = LEARNING_IDX_TO_NAME.get(cls, "unknown")
+        class_name = yaml_label_dic.get(cls, "unknown")
         percentage = 100.0 * count / len(pred_labels)
         print(f"Class {cls} ({class_name}): {count} points ({percentage:.2f}%)")
     
@@ -458,59 +532,46 @@ def infer_test_dataset():
     colored_pc = o3d.geometry.PointCloud()
     colored_pc.points = o3d.utility.Vector3dVector(points)
     
-    # Use a fixed color map for better visualization
-    color_map = np.zeros((cfg.num_classes, 3))
-    # Define distinct colors for different classes
-    colors = [
-        [0, 0, 0],       # unlabeled - black
-        [0, 0, 1],       # car - blue
-        [1, 0, 0],       # bicycle - red
-        [1, 0, 1],       # motorcycle - magenta
-        [0, 1, 1],       # truck - cyan
-        [0.5, 0.5, 0],   # other-vehicle - olive
-        [1, 0.5, 0],     # person - orange
-        [1, 1, 0],       # bicyclist - yellow
-        [1, 0, 0.5],     # motorcyclist - pink
-        [0.5, 0.5, 0.5], # road - gray
-        [0.5, 0, 0],     # parking - dark red
-        [0, 0.5, 0],     # sidewalk - dark green
-        [0, 0, 0.5],     # other-ground - dark blue
-        [0, 0.5, 0.5],   # building - teal
-        [0.5, 0, 0.5],   # fence - purple
-        [0, 1, 0],       # vegetation - green
-        [0.7, 0.7, 0.7], # trunk - light gray
-        [0.7, 0, 0.7],   # terrain - light purple
-        [0, 0.7, 0.7],   # pole - light cyan
-        [0.7, 0.7, 0]    # traffic-sign - light yellow
-    ]
 
-    # colors = [
-    #     [0, 0, 0],       # unlabeled - black
-    #     [0, 0, 0],       # car - blue
-    #     [0, 0, 0],       # bicycle - red
-    #     [0, 0, 0],       # motorcycle - magenta
-    #     [0, 0, 0],       # truck - cyan
-    #     [0, 0, 0],   # other-vehicle - olive
-    #     [0, 0, 0],     # person - orange
-    #     [0, 0, 0],       # bicyclist - yellow
-    #     [0, 0, 0],     # motorcyclist - pink
-    #     [0, 1, 0],     # road - gray
-    #     [0, 0, 0],     # parking - dark red
-    #     [0, 0, 0],     # sidewalk - dark green
-    #     [0, 0, 0],     # other-ground - dark blue
-    #     [0, 0, 0],   # building - teal
-    #     [0, 0, 0],   # fence - purple
-    #     [0, 0, 0],       # vegetation - green
-    #     [0, 0, 0], # trunk - light gray
-    #     [0, 0, 0],   # terrain - light purple
-    #     [0, 0, 0],   # pole - light cyan
-    #     [0, 0, 0]    # traffic-sign - light yellow
-    # ]
-    for i, color in enumerate(colors):
-        if i < cfg.num_classes:
-            color_map[i] = color
-    
-    point_colors = color_map[pred_labels]
+    # # Define distinct colors for different classes
+    # colors = {
+    #     0: [0, 0, 0],       # unlabeled - black
+    #     1: [0, 0, 1],       # car - blue
+    #     2: [1, 0, 0],       # bicycle - red
+    #     3: [1, 0, 1],       # motorcycle - magenta
+    #     4: [0, 1, 1],       # truck - cyan
+    #     5: [0.5, 0.5, 0],   # other-vehicle - olive
+    #     6: [1, 0.5, 0],     # person - orange
+    #     7: [1, 1, 0],       # bicyclist - yellow
+    #     8: [1, 0, 0.5],     # motorcyclist - pink
+    #     9: [0.5, 0.5, 0.5], # road - gray
+    #     10: [0.5, 0, 0],    # parking - dark red
+    #     11: [0, 0.5, 0],    # sidewalk - dark green
+    #     12: [0, 0, 0.5],    # other-ground - dark blue
+    #     13: [0, 0.5, 0.5],  # building - teal
+    #     14: [0.5, 0, 0.5],  # fence - purple
+    #     15: [0, 1, 0],      # vegetation - green
+    #     16: [0.7, 0.7, 0.7],# trunk - light gray
+    #     17: [0.7, 0, 0.7],  # terrain - light purple
+    #     18: [0, 0.7, 0.7],  # pole - light cyan
+    #     19: [0.7, 0.7, 0]   # traffic-sign - light yellow
+    # }
+
+
+
+    def map_color(labels, colors):
+        """
+        Map the labels to colors.
+        """
+        
+        color_map = np.zeros((labels.shape[0], 3), dtype=np.float32)
+
+        for key in yaml_label_color.keys():
+            color_map[labels == i] = colors[i]
+        return color_map
+
+    point_colors = map_color(pred_labels, yaml_label_color)
+
     colored_pc.colors = o3d.utility.Vector3dVector(point_colors)
     
     print("Visualizing segmented point cloud...")
