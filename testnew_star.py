@@ -10,6 +10,7 @@ from network.RandLANet import Network
 from utils.config import ConfigSemanticKITTI as cfg
 from utils.data_process import DataProcessing as DP
 import yaml
+from rich import print
 
 # ---------------------------
 # Corrected CustomPointCloudDataset
@@ -492,7 +493,9 @@ def infer_test_dataset():
         # class_name = LEARNING_IDX_TO_NAME.get(cls, "unknown")
         class_name = yaml_label_dic.get(cls, "unknown")
         percentage = 100.0 * count / len(pred_labels)
-        print(f"Class {cls} ({class_name}): {count} points ({percentage:.2f}%)")
+        # print(f"Class {cls} ({class_name}): {count} points ({percentage:.2f}%)")
+        print(f"Class {cls} ({class_name}): {count} points ({percentage:.2f}%), with color [rgb({yaml_label_color[cls][0]},{yaml_label_color[cls][1]},{yaml_label_color[cls][2]})]■[/]")
+
     
     # Try temperature scaling if we have limited class diversity
     if len(unique_classes) <= 3:  # If we have 3 or fewer classes
@@ -524,7 +527,7 @@ def infer_test_dataset():
             
             print("\nImproved class distribution:")
             for cls, count in zip(unique_classes, counts):
-                class_name = LEARNING_IDX_TO_NAME.get(cls, "unknown")
+                class_name = yaml_label_dic.get(cls, "unknown")
                 percentage = 100.0 * count / len(pred_labels)
                 print(f"Class {cls} ({class_name}): {count} points ({percentage:.2f}%)")
     
