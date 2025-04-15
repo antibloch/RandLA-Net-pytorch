@@ -262,6 +262,8 @@ def infer_test_dataset():
     if points.shape[1] > 3:
         print(f"WARNING: Point cloud has {points.shape[1]} dimensions, truncating to first 3 (XYZ)")
         points = points[:, :3]
+
+    points_cp = np.copy(points)
     
     # Grid subsampling to match training data preprocessing
     try:
@@ -533,7 +535,7 @@ def infer_test_dataset():
     
     # Create a colored point cloud to visualize the segmentation
     colored_pc = o3d.geometry.PointCloud()
-    colored_pc.points = o3d.utility.Vector3dVector(points)
+    colored_pc.points = o3d.utility.Vector3dVector(points_cp)
     
 
     # # Define distinct colors for different classes
