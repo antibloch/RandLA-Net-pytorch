@@ -106,7 +106,12 @@ For testing the pretrain model from log/checkpoint.tar on new point cloud named 
 ```bash
 python3 testnew_star.py
 ```
+For getting reference .ply files from the semanticKITTI dataset, please run the following command. Rest I will leave to your intelligence:
 
+```bash
+cd convert_npy_2_ply
+python main.py
+```
 ## F. Augmenting Dataset
 
    If one annotates new point clouds with Cloud Compare in format pc{index}_{class name}{num of time, the segmentation of this class for same index point cloud}.ply, within subdirectories of name pc{index}, withiin parent 'dataset' directory, then can be standardized by reformat_cc_annotations.py to create folder "22", and add this folder in kitti_ds/sequences.
