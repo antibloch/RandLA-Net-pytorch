@@ -563,11 +563,11 @@ def infer_test_dataset():
         """
         Map the labels to colors.
         """
-        
         color_map = np.zeros((labels.shape[0], 3), dtype=np.float32)
 
+
         for key in yaml_label_color.keys():
-            color_map[labels == i] = colors[i]
+            color_map[labels == key] = colors[key]
         return color_map
 
     point_colors = map_color(pred_labels, yaml_label_color)
