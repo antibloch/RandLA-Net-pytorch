@@ -409,7 +409,7 @@ def infer_test_dataset():
     pred_labels = np.argmax(test_probs[0], axis=1)
     print(f"Final predictions shape: {pred_labels.shape}")
 
-    pred += 1  # Note this line adds 1 to all values
+    pred_labels += 1  # Note this line adds 1 to all values
     pred_labels = remap(pred_labels)  # Remap labels to original values
     
     # Report class distribution
