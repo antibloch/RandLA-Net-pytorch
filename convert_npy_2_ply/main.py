@@ -130,10 +130,13 @@ for file in npy_files:
     data = np.load(file_path)
     labels.append(data)
 labels = np.concatenate(labels, axis=0).squeeze(-1)
+labels_ref = labels.copy()
+DATA = yaml.safe_load(open('semantic-kitti.yaml', 'r'))
+remap_dict = DATA["learning_map_inv"]
+for key in remap_dict.keys():
+    labels[labels_ref == key] = remap_dict[key]
 
-labels += 1  # Note this line adds 1 to all values
-labels = remap(labels)  # Remap labels to original values
-
+        
 def map_color(labels, colors):
     """
     Map the labels to colors.
