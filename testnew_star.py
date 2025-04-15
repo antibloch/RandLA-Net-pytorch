@@ -9,10 +9,33 @@ import open3d as o3d
 from network.RandLANet import Network
 from utils.config import ConfigSemanticKITTI as cfg
 from utils.data_process import DataProcessing as DP
+import yaml
 
 # ---------------------------
 # Corrected CustomPointCloudDataset
 # ---------------------------
+def load_yaml(path):
+    DATA = yaml.safe_load(open(path, 'r'))
+    # get number of interest classes, and the label mappings
+    remapdict = DATA["learning_map_inv"]
+    # make lookup table for mapping
+    maxkey = max(remapdict.keys())
+    # +100 hack making lut bigger just in case there are unknown labels
+    remap_lut = np.zeros((maxkey + 100), dtype=np.int32)
+    remap_lut[list(remapdict.keys())] = list(remapdict.values())
+    return remap_lut
+
+
+def remap(label):
+    upper_half = label >> 16      # get upper half for instances
+    lower_half = label & 0xFFFF   # get lower half for semantics
+    remap_lut = load_yaml('utils/semantic-kitti.yaml')
+    lower_half = remap_lut[lower_half]  # do the remapping of semantics
+    label = (upper_half << 16) + lower_half   # reconstruct full label
+    label = label.astype(np.uint32)
+    return label
+
+
 class CustomPointCloudDataset(torch_data.IterableDataset):
     def __init__(self, points, colors=None, labels=None, num_points=None, batch_size=4, num_classes=20):
         """
@@ -385,6 +408,9 @@ def infer_test_dataset():
     # Use the first (and only) probability array to get final predictions
     pred_labels = np.argmax(test_probs[0], axis=1)
     print(f"Final predictions shape: {pred_labels.shape}")
+
+    pred += 1  # Note this line adds 1 to all values
+    pred_labels = remap(pred_labels)  # Remap labels to original values
     
     # Report class distribution
     unique_classes, counts = np.unique(pred_labels, return_counts=True)
