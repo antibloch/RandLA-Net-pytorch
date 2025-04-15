@@ -160,4 +160,3 @@ pcd.colors = o3d.utility.Vector3dVector(point_colors)
 o3d.io.write_point_cloud("output.ply", pcd, write_ascii=True)
 
 
-
