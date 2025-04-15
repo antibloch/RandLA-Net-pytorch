@@ -272,11 +272,11 @@ def infer_test_dataset():
         print(f"Warning: Could not subsample point cloud: {e}")
     
     # Limit point cloud size if needed
-    max_points = 150000  # Maximum number of points to process
-    if len(points) > max_points:
-        print(f"Point cloud has {len(points)} points, randomly sampling {max_points}")
-        indices = np.random.choice(len(points), max_points, replace=False)
-        points = points[indices]
+    # max_points = 150000  # Maximum number of points to process
+    # if len(points) > max_points:
+    #     print(f"Point cloud has {len(points)} points, randomly sampling {max_points}")
+    #     indices = np.random.choice(len(points), max_points, replace=False)
+    #     points = points[indices]
     
     # Create pseudo labels.
     labels = np.zeros(len(points), dtype=np.int32)
