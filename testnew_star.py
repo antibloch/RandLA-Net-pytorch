@@ -570,7 +570,7 @@ def infer_test_dataset():
 
 
         for key in yaml_label_color.keys():
-            color_map[labels == key] = colors[key]
+            color_map[labels == key] = (np.array(colors[key]).astype(np.float32)) / 255.0
         return color_map
 
     point_colors = map_color(pred_labels, yaml_label_color)
