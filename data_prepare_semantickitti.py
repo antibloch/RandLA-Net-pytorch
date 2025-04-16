@@ -75,9 +75,15 @@ for seq_id in seq_list:
                 points = points.astype(np.float32)
                 labels = np.load(join(label_path, scan_id))
                 labels = labels.astype(np.int32)
+                sem_label = labels & 0xFFFF  # semantic label in lower half
+                inst_label = labels >> 16  # instance id in upper half
+                assert ((sem_label + (inst_label << 16) == labels).all())
+                sem_label = remap_lut[sem_label]
+                labels = sem_label.astype(np.int32)
             else:
                 points = DP.load_pc_kitti(join(pc_path, scan_id))
                 labels = DP.load_label_kitti(join(label_path, str(scan_id[:-4]) + '.label'), remap_lut)
+
             sub_points, sub_labels = DP.grid_sub_sampling(points, labels=labels, grid_size=grid_size)
             search_tree = KDTree(sub_points)
             KDTree_save = join(KDTree_path_out, str(scan_id[:-4]) + '.pkl')
