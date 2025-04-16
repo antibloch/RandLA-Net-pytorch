@@ -222,9 +222,19 @@ for fold_name in fold_names:
 
     # save as .npy
     fold_idx = int(fold_name.split["pc"][-1])
-    np.save(os.path.join(new_dir, 'velodyne', f'{fold_idx}.npy'), cum_points)
-    np.save(os.path.join(new_dir, 'labels', f'{fold_idx}.npy'), cum_labels)
+    # Use the inverse remapping from SemanticKITTI config
+    learning_map_inv = {
+        0: 0, 1: 10, 2: 11, 3: 15, 4: 18,
+        5: 20, 6: 30, 7: 31, 8: 32, 9: 40,
+        10: 44, 11: 48, 12: 49, 13: 50, 14: 51,
+        15: 70, 16: 71, 17: 72, 18: 80, 19: 81
+    }
 
+    # Vectorized mapping
+    raw_labels = np.vectorize(learning_map_inv.get)(cum_labels).astype(np.uint32)
+
+    np.save(os.path.join(new_dir, 'velodyne', f'{fold_idx}.npy'), cum_points)
+    np.save(os.path.join(new_dir, 'labels', f'{fold_idx}.npy'), raw_labels)
 
     print("\n")
 
