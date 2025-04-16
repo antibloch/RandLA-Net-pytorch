@@ -120,7 +120,7 @@ python main.py
 python3 reformat_cc_annotations.py
 ```
 
-After this, the dataset is prepared via
+After this, edit the utils/semantic-kitti.yaml and inclue "22" in in train section. Then the dataset is prepared via
 
 ```bash
 python data_prepare_semantickitti.py --src_path kitti_ds/sequences --dst_path refined_kitti_ds --augment
