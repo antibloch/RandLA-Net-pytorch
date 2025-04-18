@@ -105,6 +105,7 @@ For testing the pretrain model from log/checkpoint.tar on new point cloud named 
 
 ```bash
 python3 testnew_star.py
+python3 test_iou.py
 ```
 For getting reference .ply files from the semanticKITTI dataset, please run the following command. Rest I will leave to your intelligence:
 
