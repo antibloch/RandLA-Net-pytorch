@@ -96,7 +96,7 @@ python3 visualize_SemanticKITTI.py <args>
 ```bash
 # python3 evaluate_SemanticKITTI.py --dataset /tmp2/tsunghan/PCL_Seg_data/sequences_0.06/ --predictions runs/supervised/predictions/ --sequences 8
 
-python3 evaluate_SemanticKITTI.py --dataset /home/ti3080/codework/randlanet_pytorch/refined_kitti_ds    --predictions /home/ti3080/codework/randlanet_pytorch/validation_result --sequences 08 --eval_type sub --predictions  result
+python3 evaluate_SemanticKITTI.py --dataset refined_kitti_ds  --predictions result --sequences 08 --eval_type sub
 ```
 
 
