@@ -239,7 +239,7 @@ def infer_test_dataset():
     }
 
     checkpoint_path = "log/checkpoint.tar"
-    file_path = "combined.ply"
+    file_path = "testing.ply"
     
     # Import DataProcessing module for grid subsampling.
     from utils.data_process import DataProcessing as DP
